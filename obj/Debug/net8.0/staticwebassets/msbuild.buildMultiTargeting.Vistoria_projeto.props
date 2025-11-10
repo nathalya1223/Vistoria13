@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Vistoria_projeto.props" />
+</Project>

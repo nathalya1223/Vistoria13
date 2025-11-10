@@ -1,0 +1,171 @@
+@model Vistoria_projeto.Models.ChecklistVistoria
+
+@{
+    ViewData["Title"] = "Checklist da Vistoria";
+}
+
+<div class="container mt-4">
+    <h3>Checklist da Vistoria</h3>
+    <hr />
+
+    <form asp-action="SalvarChecklistCompleto" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+
+        <!-- Resumo do imóvel, responsável, data, horário e status -->
+        <input type="hidden" asp-for="Imovel" />
+        <input type="hidden" asp-for="Responsavel" />
+        <input type="hidden" asp-for="Data" />
+        <input type="hidden" asp-for="Horario" />
+        <input type="hidden" asp-for="Status" />
+
+        <div class="mb-3">
+            <p><strong>Imóvel:</strong> @Model.Imovel</p>
+            <p><strong>Responsável:</strong> @Model.Responsavel</p>
+            <p><strong>Data/Hora:</strong> @Model.Data.ToShortDateString() @Model.Horario</p>
+            <p><strong>Status:</strong> @Model.Status</p>
+        </div>
+
+        <!-- Paredes e Tetos -->
+        <h5>Paredes e Tetos</h5>
+        <div class="form-check">
+            <input asp-for="PinturaBomEstado" class="form-check-input" />
+            <label class="form-check-label">Pintura em bom estado</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="SemRachaduras" class="form-check-input" />
+            <label class="form-check-label">Sem rachaduras</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="SemInfiltracoes" class="form-check-input" />
+            <label class="form-check-label">Sem infiltrações</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="SemManchas" class="form-check-input" />
+            <label class="form-check-label">Sem manchas</label>
+        </div>
+
+        <!-- Pisos -->
+        <h5 class="mt-3">Pisos</h5>
+        <div class="form-check">
+            <input asp-for="PisoBomEstado" class="form-check-input" />
+            <label class="form-check-label">Piso em bom estado</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="RodapesConservados" class="form-check-input" />
+            <label class="form-check-label">Rodapés conservados</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="SemTrincas" class="form-check-input" />
+            <label class="form-check-label">Sem trincas</label>
+        </div>
+
+        <!-- Portas e Janelas -->
+        <h5 class="mt-3">Portas e Janelas</h5>
+        <div class="form-check">
+            <input asp-for="PortasFuncionando" class="form-check-input" />
+            <label class="form-check-label">Portas funcionando</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="FechadurasOk" class="form-check-input" />
+            <label class="form-check-label">Fechaduras OK</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="JanelasVedando" class="form-check-input" />
+            <label class="form-check-label">Janelas vedando</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="VidrosIntactos" class="form-check-input" />
+            <label class="form-check-label">Vidros intactos</label>
+        </div>
+
+        <!-- Instalações Elétricas -->
+        <h5 class="mt-3">Instalações Elétricas</h5>
+        <div class="form-check">
+            <input asp-for="InterruptoresOk" class="form-check-input" />
+            <label class="form-check-label">Interruptores OK</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="TomadasFuncionando" class="form-check-input" />
+            <label class="form-check-label">Tomadas funcionando</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="IluminacaoOk" class="form-check-input" />
+            <label class="form-check-label">Iluminação OK</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="QuadroLuzOk" class="form-check-input" />
+            <label class="form-check-label">Quadro de luz OK</label>
+        </div>
+
+        <!-- Instalações Hidráulicas -->
+        <h5 class="mt-3">Instalações Hidráulicas</h5>
+        <div class="form-check">
+            <input asp-for="TorneirasSemVazamento" class="form-check-input" />
+            <label class="form-check-label">Torneiras sem vazamento</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="ChuveiroOk" class="form-check-input" />
+            <label class="form-check-label">Chuveiro OK</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="VasoSanitarioOk" class="form-check-input" />
+            <label class="form-check-label">Vaso sanitário OK</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="RalosDesentupidos" class="form-check-input" />
+            <label class="form-check-label">Ralos desentupidos</label>
+        </div>
+
+        <!-- Cozinha -->
+        <h5 class="mt-3">Cozinha</h5>
+        <div class="form-check">
+            <input asp-for="PiaBomEstado" class="form-check-input" />
+            <label class="form-check-label">Pia em bom estado</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="ArmariosCozinhaOk" class="form-check-input" />
+            <label class="form-check-label">Armários OK</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="FogaoIncluido" class="form-check-input" />
+            <label class="form-check-label">Fogão incluso</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="GeladeiraIncluida" class="form-check-input" />
+            <label class="form-check-label">Geladeira inclusa</label>
+        </div>
+
+        <!-- Banheiro -->
+        <h5 class="mt-3">Banheiro</h5>
+        <div class="form-check">
+            <input asp-for="BoxBomEstado" class="form-check-input" />
+            <label class="form-check-label">Box em bom estado</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="EspelhosOk" class="form-check-input" />
+            <label class="form-check-label">Espelhos OK</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="ArmariosBanheiroOk" class="form-check-input" />
+            <label class="form-check-label">Armários OK</label>
+        </div>
+        <div class="form-check">
+            <input asp-for="AcabamentosOk" class="form-check-input" />
+            <label class="form-check-label">Acabamentos OK</label>
+        </div>
+
+        <!-- Observações -->
+        <h5 class="mt-3">Observações</h5>
+        <textarea asp-for="Observacoes" class="form-control" rows="3"></textarea>
+
+        <!-- Foto -->
+        <h5 class="mt-3">Foto da Vistoria</h5>
+        <input type="file" name="fotoVistoria" class="form-control" />
+
+        <!-- Botões -->
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success px-4">💾 Salvar Checklist</button>
+            <a asp-action="Lista" class="btn btn-secondary px-4 ms-2">← Voltar</a>
+        </div>
+    </form>
+</div>
