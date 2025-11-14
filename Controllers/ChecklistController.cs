@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.draw;
+using ImageMagick;
 
 namespace Vistoria_projeto.Controllers
 {
@@ -25,6 +27,7 @@ namespace Vistoria_projeto.Controllers
 
         public IActionResult Index() => RedirectToAction("Lista");
 
+        // LISTA
         public IActionResult Lista(string status = "Todas")
         {
             var query = _context.ChecklistsVistorias.AsQueryable();
@@ -32,57 +35,51 @@ namespace Vistoria_projeto.Controllers
             if (!string.IsNullOrEmpty(status) && status != "Todas")
                 query = query.Where(v => v.Status == status);
 
-            var vistorias = query.OrderByDescending(v => v.Data).ToList();
-
-            ViewBag.Total = _context.ChecklistsVistorias.Count();
-            ViewBag.Concluidas = _context.ChecklistsVistorias.Count(v => v.Status == "Concluída");
-            ViewBag.Agendadas = _context.ChecklistsVistorias.Count(v => v.Status == "Agendada");
+            var lista = query.OrderByDescending(v => v.Data).ToList();
             ViewBag.FiltroAtual = status;
 
-            return View(vistorias);
+            return View(lista);
         }
 
+        // DETALHES
         public IActionResult Detalhes(int id)
         {
             var vistoria = _context.ChecklistsVistorias.FirstOrDefault(v => v.Id == id);
-            if (vistoria == null)
-                return NotFound();
+            if (vistoria == null) return NotFound();
 
             return View(vistoria);
         }
 
-        [HttpGet]
         public IActionResult Nova() => View();
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Nova(ChecklistVistoria checklist)
         {
             return View("ChecklistCompleto", checklist);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        // EXCLUIR
+        [HttpGet]
         public async Task<IActionResult> Excluir(int id)
         {
-            var vistoria = _context.ChecklistsVistorias.Find(id);
+            var vistoria = _context.ChecklistsVistorias.FirstOrDefault(v => v.Id == id);
             if (vistoria == null) return NotFound();
 
             if (!string.IsNullOrEmpty(vistoria.CaminhoFoto))
             {
-                string caminhoFisico = Path.Combine(_env.WebRootPath, vistoria.CaminhoFoto.TrimStart('/'));
-                if (System.IO.File.Exists(caminhoFisico))
-                    System.IO.File.Delete(caminhoFisico);
+                string caminho = Path.Combine(_env.WebRootPath, vistoria.CaminhoFoto.TrimStart('/'));
+                if (System.IO.File.Exists(caminho))
+                    System.IO.File.Delete(caminho);
             }
 
             _context.ChecklistsVistorias.Remove(vistoria);
             await _context.SaveChangesAsync();
 
-            TempData["Mensagem"] = "Vistoria excluída com sucesso!";
+            TempData["Mensagem"] = "Vistoria excluída!";
             return RedirectToAction("Lista");
         }
 
-        [HttpGet]
+        // FORM COMPLETO
         public IActionResult ChecklistCompleto(ChecklistVistoria checklist)
         {
             if (checklist == null)
@@ -91,105 +88,159 @@ namespace Vistoria_projeto.Controllers
             return View(checklist);
         }
 
+        // SALVAR
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SalvarChecklistCompleto(ChecklistVistoria checklist, IFormFile fotoVistoria)
         {
-            if (string.IsNullOrEmpty(checklist.Imovel)) checklist.Imovel = "Não informado";
-            if (string.IsNullOrEmpty(checklist.Responsavel)) checklist.Responsavel = "Não informado";
-            if (string.IsNullOrEmpty(checklist.Status)) checklist.Status = "Entrada";
-            if (checklist.Data == default) checklist.Data = DateTime.Now;
-            if (string.IsNullOrEmpty(checklist.Horario)) checklist.Horario = DateTime.Now.ToString("HH:mm");
-            if (string.IsNullOrEmpty(checklist.Observacoes)) checklist.Observacoes = "";
-
             if (fotoVistoria != null)
             {
                 string pasta = Path.Combine(_env.WebRootPath, "fotosVistorias");
                 Directory.CreateDirectory(pasta);
 
-                string nomeArquivo = Guid.NewGuid().ToString() + Path.GetExtension(fotoVistoria.FileName);
-                string caminhoFisico = Path.Combine(pasta, nomeArquivo);
+                string nome = Guid.NewGuid() + Path.GetExtension(fotoVistoria.FileName);
+                string caminho = Path.Combine(pasta, nome);
 
-                using (var stream = new FileStream(caminhoFisico, FileMode.Create))
+                using (var stream = new FileStream(caminho, FileMode.Create))
                     await fotoVistoria.CopyToAsync(stream);
 
-                checklist.CaminhoFoto = "/fotosVistorias/" + nomeArquivo;
+                checklist.CaminhoFoto = "/fotosVistorias/" + nome;
             }
 
-            _context.Add(checklist);
+            _context.ChecklistsVistorias.Add(checklist);
             await _context.SaveChangesAsync();
 
-            TempData["Mensagem"] = "Checklist salvo com sucesso!";
             return RedirectToAction("Lista");
         }
 
-        // ✅ GERAÇÃO DE PDF FUNCIONAL E CORRIGIDA
-        [HttpGet]
-        public IActionResult BaixarPDF(int id)
+        // ASSINATURA MANUAL
+        [HttpPost]
+        public IActionResult AssinarLaudo(int id, string nomeAssinatura)
+        {
+            var vistoria = _context.ChecklistsVistorias.FirstOrDefault(v => v.Id == id);
+            if (vistoria == null) return NotFound();
+
+            vistoria.AssinadoPor = nomeAssinatura;
+            vistoria.DataAssinatura = DateTime.Now;
+            vistoria.LaudoAssinado = true;
+
+            _context.SaveChanges();
+            return RedirectToAction("Detalhes", new { id });
+        }
+
+        // ALTERAR STATUS
+        [HttpPost]
+        public IActionResult AtualizarStatus(int id, string novoStatus)
         {
             var vistoria = _context.ChecklistsVistorias.FirstOrDefault(v => v.Id == id);
             if (vistoria == null)
-                return NotFound();
+                return Json(new { sucesso = false });
 
-            using (var ms = new MemoryStream())
+            vistoria.Status = novoStatus;
+            _context.SaveChanges();
+
+            return Json(new { sucesso = true });
+        }
+
+        // PDF COMPLETO
+        public IActionResult BaixarPDF(int id)
+        {
+            var vistoria = _context.ChecklistsVistorias.FirstOrDefault(v => v.Id == id);
+            if (vistoria == null) return NotFound();
+
+            using (MemoryStream ms = new MemoryStream())
             {
                 var doc = new Document(PageSize.A4, 40, 40, 40, 40);
                 PdfWriter.GetInstance(doc, ms);
                 doc.Open();
 
-                // === Cabeçalho ===
-                var fonteTitulo = FontFactory.GetFont("Helvetica", 18, Font.BOLD, BaseColor.Black);
-                var titulo = new Paragraph($"Checklist de Vistoria - {vistoria.Imovel}", fonteTitulo);
+                // TÍTULO
+                Paragraph titulo = new Paragraph("LAUDO TÉCNICO DE VISTORIA",
+                    FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 22));
                 titulo.Alignment = Element.ALIGN_CENTER;
                 doc.Add(titulo);
 
                 doc.Add(new Paragraph(" "));
-                doc.Add(new Paragraph($"Responsável: {vistoria.Responsavel}"));
-                doc.Add(new Paragraph($"Data: {vistoria.Data:dd/MM/yyyy}  •  Horário: {vistoria.Horario}"));
-                doc.Add(new Paragraph($"Status: {vistoria.Status}"));
-                doc.Add(new Paragraph(" "));
-                doc.Add(new Paragraph("Observações: " + (string.IsNullOrEmpty(vistoria.Observacoes) ? "Nenhuma" : vistoria.Observacoes)));
+                doc.Add(new LineSeparator());
                 doc.Add(new Paragraph(" "));
 
-                // === Foto ===
+                // DADOS
+                PdfPTable dados = new PdfPTable(2);
+                dados.WidthPercentage = 100;
+                dados.AddCell("Imóvel:");
+                dados.AddCell(vistoria.Imovel);
+                dados.AddCell("Responsável:");
+                dados.AddCell(vistoria.Responsavel);
+                dados.AddCell("Status:");
+                dados.AddCell(vistoria.Status);
+
+                doc.Add(dados);
+                doc.Add(new Paragraph(" "));
+                doc.Add(new LineSeparator());
+                doc.Add(new Paragraph(" "));
+
+                // FOTO
+                doc.Add(new Paragraph("FOTO DA VISTORIA",
+                    FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 16)));
+                doc.Add(new Paragraph(" "));
+
                 if (!string.IsNullOrEmpty(vistoria.CaminhoFoto))
                 {
-                    try
+                    string caminhoOriginal = Path.Combine(_env.WebRootPath, vistoria.CaminhoFoto.TrimStart('/'));
+
+                    if (System.IO.File.Exists(caminhoOriginal))
                     {
-                        string caminhoFisico = Path.Combine(_env.WebRootPath, vistoria.CaminhoFoto.TrimStart('/'));
-                        if (System.IO.File.Exists(caminhoFisico))
+                        try
                         {
-                            var img = iTextSharp.text.Image.GetInstance(caminhoFisico);
-                            img.ScaleToFit(400f, 300f);
-                            img.Alignment = Element.ALIGN_CENTER;
-                            doc.Add(img);
-                            doc.Add(new Paragraph(" "));
+                            string ext = Path.GetExtension(caminhoOriginal).ToLower();
+                            string[] diretos = { ".jpg", ".jpeg", ".png" };
+
+                            string caminhoParaPdf = caminhoOriginal;
+
+                            if (!diretos.Contains(ext))
+                            {
+                                string novoNome = Guid.NewGuid() + ".jpg";
+                                string novoCaminho = Path.Combine(_env.WebRootPath, "fotosVistorias", novoNome);
+
+                                using (var img = new MagickImage(caminhoOriginal))
+                                {
+                                    img.Format = MagickFormat.Jpeg;
+                                    img.Write(novoCaminho);
+                                }
+
+                                caminhoParaPdf = novoCaminho;
+                            }
+
+                            var foto = iTextSharp.text.Image.GetInstance(caminhoParaPdf);
+                            foto.ScaleToFit(450f, 350f);
+                            foto.Alignment = Element.ALIGN_CENTER;
+                            doc.Add(foto);
                         }
+                        catch { }
                     }
-                    catch { }
                 }
 
-                // === Itens verificados ===
-                var fonteSubtitulo = FontFactory.GetFont("Helvetica", 14, Font.BOLD, BaseColor.Black);
-                doc.Add(new Paragraph("Itens Verificados:", fonteSubtitulo));
+                // ASSINATURA
+                doc.Add(new Paragraph(" "));
+                doc.Add(new LineSeparator());
                 doc.Add(new Paragraph(" "));
 
-                var props = typeof(ChecklistVistoria).GetProperties()
-                    .Where(p => p.PropertyType == typeof(bool))
-                    .ToList();
+                doc.Add(new Paragraph("ASSINATURA DIGITAL",
+                    FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 16)));
 
-                foreach (var p in props)
+                if (vistoria.LaudoAssinado)
                 {
-                    bool valor = (bool)(p.GetValue(vistoria) ?? false);
-                    string nome = p.Name.Replace("_", " ");
-                    var linha = new Paragraph($"{(valor ? "✔" : "❌")} {nome}");
-                    doc.Add(linha);
+                    doc.Add(new Paragraph($"Assinado por: {vistoria.AssinadoPor}"));
+                    doc.Add(new Paragraph($"Data da assinatura: {vistoria.DataAssinatura:dd/MM/yyyy HH:mm}"));
+                }
+                else
+                {
+                    doc.Add(new Paragraph("❌ Laudo não assinado."));
                 }
 
                 doc.Close();
-                var bytes = ms.ToArray();
 
-                return File(bytes, "application/pdf", $"Vistoria_{vistoria.Imovel}_{vistoria.Id}.pdf");
+                return File(ms.ToArray(), "application/pdf",
+                    $"Laudo_{vistoria.Id}.pdf");
             }
         }
     }

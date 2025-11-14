@@ -39,17 +39,22 @@ namespace Vistoria_projeto.Migrations
                     b.Property<bool>("ArmariosCozinhaOk")
                         .HasColumnType("bit");
 
+                    b.Property<string>("AssinadoPor")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("BoxBomEstado")
                         .HasColumnType("bit");
 
                     b.Property<string>("CaminhoFoto")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("ChuveiroOk")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataAssinatura")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("EspelhosOk")
@@ -78,6 +83,9 @@ namespace Vistoria_projeto.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("JanelasVedando")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LaudoAssinado")
                         .HasColumnType("bit");
 
                     b.Property<string>("Observacoes")

@@ -6,12 +6,12 @@ namespace Vistoria_projeto.Models
     {
         public int Id { get; set; }
 
-        // Cabeçalho / dados gerais
+        // Dados gerais
         public DateTime Data { get; set; } = DateTime.Now;
         public string? Horario { get; set; }
-        public string Responsavel { get; set; }
-        public string Imovel { get; set; }
-        public string Status { get; set; } // "Entrada", "Saída", "Agendada", "Concluída"
+        public string Responsavel { get; set; } = "Não informado";
+        public string Imovel { get; set; } = "Não informado";
+        public string Status { get; set; } = "Agendada";
 
         // Paredes e Tetos
         public bool PinturaBomEstado { get; set; }
@@ -54,8 +54,12 @@ namespace Vistoria_projeto.Models
         public bool ArmariosBanheiroOk { get; set; }
         public bool AcabamentosOk { get; set; }
 
-        // Observações gerais + Foto
-        public string Observacoes { get; set; }
-        public string CaminhoFoto { get; set; }
+        public string Observacoes { get; set; } = "";
+        public string? CaminhoFoto { get; set; }
+
+        // Assinatura digital
+        public string? AssinadoPor { get; set; }
+        public DateTime? DataAssinatura { get; set; }
+        public bool LaudoAssinado { get; set; } = false;
     }
 }
