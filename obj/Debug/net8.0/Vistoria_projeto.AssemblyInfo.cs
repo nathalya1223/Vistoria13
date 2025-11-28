@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Vistoria_projeto")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d7290c7865c3230d43f48533af3d93a4547bd075")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7bab0423a69b85d75af664146c3d26710c47b9e7")]
 [assembly: System.Reflection.AssemblyProductAttribute("Vistoria_projeto")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Vistoria_projeto")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

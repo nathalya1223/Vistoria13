@@ -13,8 +13,28 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\0583bb7a-e04e-47ef-82eb-f41bab9af29a.jpg",
+      "PackagePath": "staticwebassets\\fotosVistorias\\0583bb7a-e04e-47ef-82eb-f41bab9af29a.jpg"
+    },
+    {
+      "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\0e560ae3-adc0-49a6-b45b-0d14aa6ab749.jpg",
+      "PackagePath": "staticwebassets\\fotosVistorias\\0e560ae3-adc0-49a6-b45b-0d14aa6ab749.jpg"
+    },
+    {
+      "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\0ef8f300-2ca8-4191-b169-368ef73515e4.jpg",
+      "PackagePath": "staticwebassets\\fotosVistorias\\0ef8f300-2ca8-4191-b169-368ef73515e4.jpg"
+    },
+    {
+      "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\187344d6-c0c5-45ea-b11e-3bcf6a9b09a7.avif",
+      "PackagePath": "staticwebassets\\fotosVistorias\\187344d6-c0c5-45ea-b11e-3bcf6a9b09a7.avif"
+    },
+    {
       "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\2cec7814-65f3-4cd3-961d-2127b46d21ca.jpg",
       "PackagePath": "staticwebassets\\fotosVistorias\\2cec7814-65f3-4cd3-961d-2127b46d21ca.jpg"
+    },
+    {
+      "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\2d60cc53-6464-43c0-b462-d83197b1f95d.jpg",
+      "PackagePath": "staticwebassets\\fotosVistorias\\2d60cc53-6464-43c0-b462-d83197b1f95d.jpg"
     },
     {
       "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\3dbb8db5-486e-4f15-b216-0100a68b42cc.jpg",
@@ -29,6 +49,14 @@
       "PackagePath": "staticwebassets\\fotosVistorias\\686b5837-f2e1-4958-b9cc-40d60770c627.jpg"
     },
     {
+      "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\710168ec-7e99-400f-b877-9fc18793a6ac.jpg",
+      "PackagePath": "staticwebassets\\fotosVistorias\\710168ec-7e99-400f-b877-9fc18793a6ac.jpg"
+    },
+    {
+      "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\72291bd2-1c06-4d13-b1d9-f581dc4eed5b.jpg",
+      "PackagePath": "staticwebassets\\fotosVistorias\\72291bd2-1c06-4d13-b1d9-f581dc4eed5b.jpg"
+    },
+    {
       "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\76e88f28-59b7-4da3-8142-63b1e2927341.jpg",
       "PackagePath": "staticwebassets\\fotosVistorias\\76e88f28-59b7-4da3-8142-63b1e2927341.jpg"
     },
@@ -41,12 +69,24 @@
       "PackagePath": "staticwebassets\\fotosVistorias\\8ba761cc-6fdf-4843-b98c-58b67d98263f.jpg"
     },
     {
+      "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\935dfbad-ed18-4a2e-8cce-6d9c65f68010.jpg",
+      "PackagePath": "staticwebassets\\fotosVistorias\\935dfbad-ed18-4a2e-8cce-6d9c65f68010.jpg"
+    },
+    {
       "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\a4fc6488-0634-4ef3-8ae0-b74acb74342f.avif",
       "PackagePath": "staticwebassets\\fotosVistorias\\a4fc6488-0634-4ef3-8ae0-b74acb74342f.avif"
     },
     {
       "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\b58cde09-919c-4d8b-b127-42d368196456.avif",
       "PackagePath": "staticwebassets\\fotosVistorias\\b58cde09-919c-4d8b-b127-42d368196456.avif"
+    },
+    {
+      "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\c0f2b59e-37c2-4cdf-975c-71cf4ece3d48.jpg",
+      "PackagePath": "staticwebassets\\fotosVistorias\\c0f2b59e-37c2-4cdf-975c-71cf4ece3d48.jpg"
+    },
+    {
+      "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\c1bad718-0924-49f8-a01c-2f371d8015de.jpg",
+      "PackagePath": "staticwebassets\\fotosVistorias\\c1bad718-0924-49f8-a01c-2f371d8015de.jpg"
     },
     {
       "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\e1c0cfd7-32a8-4b27-bea0-a294ab0289a5.jpg",
@@ -67,6 +107,10 @@
     {
       "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\f81474e7-f8fe-42b0-b5ca-7c09f117db4a.avif",
       "PackagePath": "staticwebassets\\fotosVistorias\\f81474e7-f8fe-42b0-b5ca-7c09f117db4a.avif"
+    },
+    {
+      "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\fotosVistorias\\f97379ab-28b5-489f-a5f0-a59955251712.jpg",
+      "PackagePath": "staticwebassets\\fotosVistorias\\f97379ab-28b5-489f-a5f0-a59955251712.jpg"
     },
     {
       "Id": "C:\\Users\\426123624\\Documents\\Vistoria_projeto\\wwwroot\\imagens\\IMG_0913.jpeg",
